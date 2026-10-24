@@ -1,4 +1,4 @@
-﻿Hero yaroslav = new Hero("Ярослав", 100);
+﻿/* Hero yaroslav = new Hero("Ярослав", 100);
 Hero anastasia = new Hero("Анастасия", 90);
 Hero artem = new Hero("Артём", 120);
 
@@ -24,5 +24,5 @@ Console.WriteLine(">>> Герой 3 <<<");
 Console.WriteLine($"Имя: {artem.Name}");
 Console.WriteLine($"Здоровье: {artem.Health}");
 Console.WriteLine($"Уровень: {artem.Level}");
-Console.WriteLine($"Опыт: {artem.Experience}");
+Console.WriteLine($"Опыт: {artem.Experience}"); */
 
