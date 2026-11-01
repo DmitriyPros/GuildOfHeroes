@@ -18,4 +18,34 @@ public class SpaceObject
         Mass = m;
         Info = i;
     }
+
+    public void Zoom(int zoom)
+    {
+        if (zoom <= 0)
+        {
+            return;
+        }
+
+        Light -= zoom;
+
+        if (Light < 0)
+        {
+            Light = 0;
+        }
+
+
+    }
+
+    public void NalInfo(string nal)
+    {
+        Info = nal;
+        return;
+
+    }
+
+    public bool Unik()
+    {
+        return Type == "Пульсар";
+    }
+
 }
