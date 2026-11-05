@@ -1,9 +1,28 @@
 public class SpaceObject
 {
-    public string Name;
+    private string _name = "Безымянный объект";
+
+    public string Name
+    {
+        get
+        {
+            return _name;
+        }
+
+        private set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                _name = "Безымянный объект";
+                return;
+            }
+
+            _name = value.Trim();
+        }
+    }
     public string Type;
     public string Location;
-    public double DistanceLightYears;
+    public double DistanceLightYears { get; private set; }
     public string Mass;
     public string Info;
 
@@ -13,11 +32,16 @@ public class SpaceObject
         Name = name;
         Type = type;
         Location = location;
-        DistanceLightYears = distanceLightYears;
-        Mass = mass;
         Info = info;
-    }
+        Mass = mass;
 
+        DistanceLightYears = distanceLightYears;
+        if (DistanceLightYears < 0)
+        {
+            DistanceLightYears = 0;
+        }
+    }
+        
     public void Approach(double lightYears)
     {
         if (lightYears <= 0)
