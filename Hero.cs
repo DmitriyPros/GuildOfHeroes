@@ -1,4 +1,4 @@
-public class Hero
+/*public class Hero
 {
     private string _name = "Безымянный герой";
 
@@ -23,8 +23,8 @@ public class Hero
 
     public int Health { get; private set; }
     public int MaxHealth { get; private set; }
-    public int Level;
-    public int Experience;
+    public int Level { get; private set; }
+    public int Experience { get; private set; }
 
     public Hero(string name, int health)
     {
@@ -57,7 +57,6 @@ public class Hero
         Level = 1;
         Experience = 0;
     }
-
 
     public void TakeDamage(int damage)
     {
@@ -92,10 +91,14 @@ public class Hero
         Health += amount;
     }
 
-
     public void GainExperience(int amount)
     {
         if (amount <= 0)
+        {
+            return;
+        }
+
+        if (amount > 2147483647 - Experience)
         {
             return;
         }
@@ -115,7 +118,8 @@ public class Hero
                $"Уровень: {Level}\n" +
                $"Опыт: {Experience}";
     }
-}
+}*/
+
 
 
 

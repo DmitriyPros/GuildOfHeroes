@@ -1,51 +1,55 @@
-using System.Text.Json.Serialization;
-
 public class SpaceObject
 {
     public string Name;
     public string Type;
     public string Location;
-    public double Light;
+    public double DistanceLightYears;
     public string Mass;
     public string Info;
 
-    public SpaceObject(string name, string type, string loc, double light, string m, string i)
+    public SpaceObject(string name, string type, string location,
+                       double distanceLightYears, string mass, string info)
     {
         Name = name;
-        Location = loc;
         Type = type;
-        Light = light;
-        Mass = m;
-        Info = i;
+        Location = location;
+        DistanceLightYears = distanceLightYears;
+        Mass = mass;
+        Info = info;
     }
 
-    public void Zoom(int zoom)
+    public void Approach(double lightYears)
     {
-        if (zoom <= 0)
+        if (lightYears <= 0)
         {
             return;
         }
 
-        Light -= zoom;
+        DistanceLightYears -= lightYears;
 
-        if (Light < 0)
+        if (DistanceLightYears < 0)
         {
-            Light = 0;
+            DistanceLightYears = 0;
         }
-
-
     }
 
-    public void NalInfo(string nal)
+    public void UpdateInfo(string info)
     {
-        Info = nal;
-        return;
-
+        Info = info;
     }
 
-    public bool Unik()
+    public bool IsPulsar()
     {
-        return Type == "Пульсар";
+        return Type.ToLower() == "пульсар";
     }
 
+    public string GetInfo()
+    {
+        return $">>> {Name} <<<\n" +
+               $"Тип: {Type}\n" +
+               $"Расположение: {Location}\n" +
+               $"Расстояние: {DistanceLightYears} св. лет\n" +
+               $"Масса: {Mass}\n" +
+               $"Информация: {Info}";
+    }
 }
