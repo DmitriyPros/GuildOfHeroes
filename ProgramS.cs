@@ -1,5 +1,8 @@
 // Расстояния — от Земли, в световых годах.
 // Earth = 0: наблюдаем «сами с себя».
+using System.Data.Common;
+using System.Security.Cryptography;
+
 SpaceObject Earth = new SpaceObject(
     "Земля", "Планета",
     "Галактика Млечный путь, Солнечная система, третья планета от Солнца",
@@ -28,6 +31,7 @@ SpaceObject TC = new SpaceObject(
     "886 ± 187 миллионов масс Солнца",
     "Первый астрономический объект, идентифицированный как квазар. Самый яркий квазар на небе Земли");
 
+// Начальное состояние 
 Console.WriteLine(">>> Начальное состояние <<<");
 Console.WriteLine($"Earth={Earth.DistanceLightYears}, Sgr={Sgr.DistanceLightYears}, " +
                   $"PSR={PSR.DistanceLightYears}, TC={TC.DistanceLightYears}");
@@ -62,7 +66,7 @@ Console.WriteLine();
 
 // --- Демонстрация работы свойства DistanceLightYears ---
 SpaceObject Sirius = new SpaceObject(
-    "Сириус А", "Звезда", "α Большого Пса", -100.5, "2,063 ± 0,023 массы Солнца", "Главная и самая яркая компонента двойной звёздной системы Сириуса, которую мы видим на ночном небе невооружённым глазом"
+    "Sirius А", "Звезда", "α Большого Пса", -100.5, "2,063 ± 0,023 массы Солнца", "Главная и самая яркая компонента двойной звёздной системы Сириуса, которую мы видим на ночном небе невооружённым глазом"
 );
 Console.WriteLine("--- Демонстрация свойства DistanceLightYears ---");
 Console.WriteLine(Sirius.GetInfo());
@@ -131,4 +135,64 @@ if (TC.IsPulsar())
 else
 {
     Console.WriteLine("Уникален: нет *");
+}
+Console.WriteLine();
+
+// Работа со списком
+Catalog catalog = new Catalog("Каталог объектов");
+catalog.Objects.Add(Earth);
+catalog.Objects.Add(Sgr);
+catalog.Objects.Add(PSR);
+catalog.Objects.Add(TC);
+catalog.Objects.Add(Sirius);
+
+if (catalog.Objects.Count > 0)
+{
+    Console.WriteLine($"Количество элементов: {catalog.Objects.Count}");
+    Console.WriteLine($"Первый элемент: {catalog.Objects[0].Name}");
+    Console.WriteLine($"Последний элемент: {catalog.Objects[catalog.Objects.Count - 1].Name}");
+}
+Console.WriteLine();
+
+Console.WriteLine("--- Вывод информации об объектах ---");
+foreach (SpaceObject obj in catalog.Objects)
+{
+    Console.WriteLine(obj.GetInfo());
+    Console.WriteLine();
+}
+Console.WriteLine();
+
+Console.WriteLine("--- Добавление ещё одного элемента одной строкой ---");
+catalog.Objects.Add(Cygnus1);
+if (catalog.Objects.Count > 0)
+{
+    Console.WriteLine($"Количество элементов: {catalog.Objects.Count}");
+    Console.WriteLine($"Первый элемент: {catalog.Objects[0].Name}");
+    Console.WriteLine($"Последний элемент: {catalog.Objects[catalog.Objects.Count - 1].Name}");
+}
+Console.WriteLine();
+
+Console.WriteLine("--- Проверка числового свойства ---");
+int farCount = 0;
+foreach (SpaceObject obj in catalog.Objects)
+{
+    if (obj.DistanceLightYears > 1_000_000_000)
+    {
+        farCount += 1;
+    }
+}
+Console.WriteLine($"Объектов, находящихся на расстоянии больше 1 млрд. св. лет: {farCount}");
+
+Console.WriteLine();
+Console.WriteLine("--- Изменение состояния объекта после добавления в список ---");
+if (catalog.Objects.Count > 0)
+{
+    SpaceObject lastObj = catalog.Objects[catalog.Objects.Count - 1];
+    
+    Console.WriteLine($"До изменения (расстояние): {lastObj.DistanceLightYears} св. лет");
+    
+    Cygnus1.Approach(1_000_000); 
+    
+    Console.WriteLine($"После изменения (расстояние): {catalog.Objects[catalog.Objects.Count - 1].DistanceLightYears} св. лет");
+    Console.WriteLine($"Изменение через метод видно в списке!");
 }
