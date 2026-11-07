@@ -138,61 +138,55 @@ else
 }
 Console.WriteLine();
 
-// Работа со списком
+// Работа с защищённым каталогом
+Console.WriteLine(">>> Каталог объектов <<<");
+
 Catalog catalog = new Catalog("Каталог объектов");
-catalog.Objects.Add(Earth);
-catalog.Objects.Add(Sgr);
-catalog.Objects.Add(PSR);
-catalog.Objects.Add(TC);
-catalog.Objects.Add(Sirius);
 
-if (catalog.Objects.Count > 0)
+// Демонстрация успешного добавления
+catalog.AddObject(Earth);
+catalog.AddObject(Sgr);
+catalog.AddObject(PSR);
+catalog.AddObject(TC);
+catalog.AddObject(Sirius);
+catalog.AddObject(Cygnus1);
+
+Console.WriteLine($"Успешно добавлено объектов: {catalog.ObjectCount}");
+
+// Демонстрация отказа (дубликат)
+bool isDuplicateAdded = catalog.AddObject(Earth);
+Console.WriteLine($"Попытка добавить Землю второй раз: {isDuplicateAdded}"); // False
+
+// Поиск (существующий и несуществующий)
+SpaceObject? foundObj = catalog.FindObjectByName("   sgr a*   "); // С пробелами и маленькими буквами
+if (foundObj != null)
 {
-    Console.WriteLine($"Количество элементов: {catalog.Objects.Count}");
-    Console.WriteLine($"Первый элемент: {catalog.Objects[0].Name}");
-    Console.WriteLine($"Последний элемент: {catalog.Objects[catalog.Objects.Count - 1].Name}");
+    Console.WriteLine($"Найден по запросу «   sgr a*   »: {foundObj.Name}");
 }
+else
+{
+    Console.WriteLine("Объект не найден.");
+}
+
+SpaceObject? notFoundObj = catalog.FindObjectByName("Марс");
+if (notFoundObj == null)
+{
+    Console.WriteLine("Объект 'Марс' не найден в каталоге.");
+}
+
+// Удаление
+Console.WriteLine($"Удаление Марса: {catalog.RemoveObject("Марс")}"); // False, его нет
+Console.WriteLine($"Удаление Земли: {catalog.RemoveObject("Земля")}"); // True
+Console.WriteLine($"Объектов после удаления: {catalog.ObjectCount}");
+
+// Выдача защитной копии списка
+List<SpaceObject> copyList = catalog.GetObjects();
+copyList.Clear(); // Очищаем копию
+Console.WriteLine($"В копии осталось: {copyList.Count}");
+Console.WriteLine($"В каталоге по-прежнему: {catalog.ObjectCount}"); // Каталог защищен
+
+// Метод-запрос
+int farObjects = catalog.CountFartherThan(1_000_000_000);
+Console.WriteLine($"Объектов дальше 1 млрд св. лет: {farObjects}");
+
 Console.WriteLine();
-
-Console.WriteLine("--- Вывод информации об объектах ---");
-foreach (SpaceObject obj in catalog.Objects)
-{
-    Console.WriteLine(obj.GetInfo());
-    Console.WriteLine();
-}
-Console.WriteLine();
-
-Console.WriteLine("--- Добавление ещё одного элемента одной строкой ---");
-catalog.Objects.Add(Cygnus1);
-if (catalog.Objects.Count > 0)
-{
-    Console.WriteLine($"Количество элементов: {catalog.Objects.Count}");
-    Console.WriteLine($"Первый элемент: {catalog.Objects[0].Name}");
-    Console.WriteLine($"Последний элемент: {catalog.Objects[catalog.Objects.Count - 1].Name}");
-}
-Console.WriteLine();
-
-Console.WriteLine("--- Проверка числового свойства ---");
-int farCount = 0;
-foreach (SpaceObject obj in catalog.Objects)
-{
-    if (obj.DistanceLightYears > 1_000_000_000)
-    {
-        farCount += 1;
-    }
-}
-Console.WriteLine($"Объектов, находящихся на расстоянии больше 1 млрд. св. лет: {farCount}");
-
-Console.WriteLine();
-Console.WriteLine("--- Изменение состояния объекта после добавления в список ---");
-if (catalog.Objects.Count > 0)
-{
-    SpaceObject lastObj = catalog.Objects[catalog.Objects.Count - 1];
-    
-    Console.WriteLine($"До изменения (расстояние): {lastObj.DistanceLightYears} св. лет");
-    
-    Cygnus1.Approach(1_000_000); 
-    
-    Console.WriteLine($"После изменения (расстояние): {catalog.Objects[catalog.Objects.Count - 1].DistanceLightYears} св. лет");
-    Console.WriteLine($"Изменение через метод видно в списке!");
-}
